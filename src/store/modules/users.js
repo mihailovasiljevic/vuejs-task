@@ -6,19 +6,28 @@ const user = {
   invoices: []
 }
 const state = {
-  user: {...user},
+  user: {
+    id: -1,
+    username: '',
+    password: '',
+    invoices: []
+  },
   error: {
     message: ''
   }
 }
 const mutations = {
   'SET_USER' (state, authData) {
-    state.user = {...authData}
+    state.user = JSON.parse(JSON.stringify(authData))
   },
   'SET_ERROR_MESSAGE' (state, error) {
     state.error = state.error !== null ? {...error} : null
   },
   'PUSH_INVOICE' (state, invoice) {
+    if (state.user.invoices === undefined) {
+      state.user.invoices = []
+    }
+    console.log(invoice)
     state.user.invoices.push(invoice)
   },
   'REMOVE_INVOICE' (state, index) {
@@ -38,13 +47,13 @@ const actions = {
     }
   },
   logout ({ commit }) {
-    commit('SET_USER', {...user})
+    commit('SET_USER', user)
   },
   addInvoice ({commit}, invoiceData) {
     commit('PUSH_INVOICE', invoiceData)
   },
   removeInvoice ({commit}, invoiceData) {
-    const invoiceIdx = state.invoices.indexOf(state.invoices.find(element => element.invoiceNumber === invoiceData.invoiceNumber))
+    const invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.invoiceNumber === invoiceData.invoiceNumber))
     commit('REMOVE_INVOICE', invoiceIdx)
   }
 }
@@ -60,6 +69,9 @@ const getters = {
   },
   error (state, getters) {
     return state.error
+  },
+  invoices (state, getters) {
+    return user.invoices
   }
 }
 
