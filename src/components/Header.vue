@@ -26,8 +26,8 @@
             </v-list-tile-content>
           </v-list-tile>
         </router-link>
-        <router-link to="/logout">
-          <v-list-tile @click="" v-if="user">
+
+          <v-list-tile @click="logoutUser" v-if="user">
             <v-list-tile-action>
               <v-icon>account_circle</v-icon>
             </v-list-tile-action>
@@ -35,7 +35,7 @@
               <v-list-tile-title>Logout</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-        </router-link>
+
       </v-list>
     </v-navigation-drawer>
     <v-toolbar color="indigo" dark fixed app>
@@ -62,11 +62,20 @@
 
 
 <script>
+import {mapActions} from 'vuex'
 
 export default {
   data: () => ({
     drawer: null
   }),
+  methods: {
+    ...mapActions([
+      'logout'
+    ]),
+    logoutUser () {
+      this.$store.dispatch('logout').then(this.$router.push({path: '/login'}))
+    }
+  },
   computed: {
     user () {
       return this.$store.getters.user
