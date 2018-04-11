@@ -1,4 +1,5 @@
 import Users from '../../data/users'
+
 const user = {
   id: -1,
   username: '',
@@ -24,10 +25,6 @@ const mutations = {
     state.error = state.error !== null ? {...error} : null
   },
   'PUSH_INVOICE' (state, invoice) {
-    if (state.user.invoices === undefined) {
-      state.user.invoices = []
-    }
-    console.log(invoice)
     state.user.invoices.push(invoice)
   },
   'REMOVE_INVOICE' (state, index) {
@@ -50,10 +47,14 @@ const actions = {
     commit('SET_USER', user)
   },
   addInvoice ({commit}, invoiceData) {
-    commit('PUSH_INVOICE', invoiceData)
+    if (state.user.invoices === undefined) {
+      console.log('PROBLEM!')
+    } else {
+      commit('PUSH_INVOICE', invoiceData)
+    }
   },
   removeInvoice ({commit}, invoiceData) {
-    const invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.invoiceNumber === invoiceData.invoiceNumber))
+    const invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.id === invoiceData.id))
     commit('REMOVE_INVOICE', invoiceIdx)
   }
 }
@@ -71,7 +72,7 @@ const getters = {
     return state.error
   },
   invoices (state, getters) {
-    return user.invoices
+    return state.user.invoices
   }
 }
 

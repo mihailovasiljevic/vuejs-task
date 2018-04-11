@@ -77,13 +77,18 @@ export default {
       'addInvoice'
     ]),
     addUserInvoice () {
-      this.$store.dispatch('addInvoice', this.invoice)
+      let newInvoice = {}
+      Object.assign(newInvoice, this.invoice)
+      this.$store.dispatch('addInvoice', newInvoice)
     },
     clear () {
-      this.invoice.id = 0
-      this.invoice.description = ''
-      this.invoice.date = ''
-      this.invoice.amount = 0.0
+      let newInvoice = {
+        id: 0,
+        description: '',
+        date: new Date().toISOString().slice(0, 10),
+        amount: 0.0
+      }
+      Object.assign(this.invoice, newInvoice)
     },
     isLoggedIn () {
       if (this.user.id === -1) {
