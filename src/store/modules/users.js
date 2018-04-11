@@ -1,31 +1,38 @@
 import Users from '../../data/users'
 
 const state = {
-  user: null,
+  user: {
+    id: -1,
+    username: '',
+    password: '',
+    invoices: [{
+      id: -1,
+      description: '',
+      date: Date.now(),
+      amount: -1.0
+    }]
+  },
   error: {
     message: ''
   }
 }
 const mutations = {
   'SET_USER' (state, authData) {
-    console.log('SET_USER')
-    console.log(state.user)
-    console.log(authData)
-    state.user = authData !== null ? {...authData} : null
-    console.log(state.user)
+    state.user = {...authData}
   },
   'SET_ERROR_MESSAGE' (state, error) {
     state.error = state.error !== null ? {...error} : null
+  },
+  'PUSH_INVOICE' (state, invoice) {
+    state.invoices.push(invoice)
+  },
+  'REMOVE_INVOICE' (state, index) {
+    state.invoices.splice(index, 1)
   }
 }
 const actions = {
   login ({ commit }, authData) {
-    console.log('LOGIN ACTION')
-    console.log('USERS: ')
-    console.log(Users)
     const user = Users.find(element => element.username === authData.username && element.password === authData.password)
-    console.log('USER: ')
-    console.log(user)
     if (user) {
       commit('SET_USER', user)
     } else {
@@ -37,6 +44,13 @@ const actions = {
   },
   logout ({ commit }) {
     commit('SET_USER', null)
+  },
+  addInvoice ({commit}, invoiceData) {
+    commit('PUSH_INVOICE', invoiceData)
+  },
+  removeInvoice ({commit}, invoiceData) {
+    const invoiceIdx = state.invoices.indexOf(state.invoices.find(element => element.invoiceNumber === invoiceData.invoiceNumber))
+    commit('REMOVE_INVOICE', invoiceIdx)
   }
 }
 

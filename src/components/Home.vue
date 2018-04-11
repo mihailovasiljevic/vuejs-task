@@ -1,5 +1,5 @@
 <template>
-  <h1 v-if="user"> {{navigateToInvoices()}} </h1>
+  <h1 v-if="loggedIn"> {{navigateToInvoices()}} </h1>
   <h1 v-else> {{navigateToLogin()}} </h1>
 </template>
 
@@ -7,7 +7,8 @@
 
 export default {
   data: () => ({
-    drawer: null
+    drawer: null,
+    loggedIn: false
   }),
   computed: {
     user () {
@@ -15,6 +16,9 @@ export default {
     },
     error () {
       return this.$store.getters.error
+    },
+    loggedIn () {
+      return this.user.id !== -1
     }
   },
   methods: {
