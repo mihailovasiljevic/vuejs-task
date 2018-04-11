@@ -23,7 +23,16 @@
                     v-model="invoice.amount"
                     required
                   ></v-text-field>
-                  <v-date-picker :landscape="landscape" :reactive="reactive" full-width class="mt-3" v-model="invoice.date"></v-date-picker>
+                  <v-date-picker 
+                    :landscape="landscape" 
+                    :reactive="reactive" 
+                    full-width 
+                    class="mt-3" 
+                    v-model="invoice.date"
+                    :first-day-of-week="1"
+                    locale="sr-rs"
+                    >
+                    </v-date-picker>
                   
                   <v-card-actions>
                     <v-spacer></v-spacer>
@@ -37,7 +46,7 @@
         </v-layout>
       </v-container>
     </v-content>
-    {{showInvoice}}
+    {{invoice.date}}
   </v-app>
 </template>
 
@@ -53,7 +62,7 @@ export default {
     invoice: {
       id: 0,
       description: '',
-      date: '',
+      date: new Date().toISOString().slice(0, 10),
       amount: 0.0
     },
     showInvoice: {}
