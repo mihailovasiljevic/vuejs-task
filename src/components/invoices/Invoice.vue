@@ -46,12 +46,13 @@
         </v-layout>
       </v-container>
     </v-content>
-    {{invoice.date}}
+    <invoice-list></invoice-list>
   </v-app>
 </template>
 
 <script>
 import {mapActions} from 'vuex'
+import InvoiceList from './InvoiceList.vue'
 
 export default {
   data: () => ({
@@ -88,6 +89,9 @@ export default {
     error () {
       return this.$store.getters.error
     }
+  },
+  components: {
+    'invoice-list': InvoiceList
   }
 }
 </script>

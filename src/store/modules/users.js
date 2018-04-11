@@ -1,17 +1,12 @@
 import Users from '../../data/users'
-
+const user = {
+  id: -1,
+  username: '',
+  password: '',
+  invoices: []
+}
 const state = {
-  user: {
-    id: -1,
-    username: '',
-    password: '',
-    invoices: [{
-      id: -1,
-      description: '',
-      date: Date.now(),
-      amount: -1.0
-    }]
-  },
+  user: {...user},
   error: {
     message: ''
   }
@@ -24,10 +19,10 @@ const mutations = {
     state.error = state.error !== null ? {...error} : null
   },
   'PUSH_INVOICE' (state, invoice) {
-    state.invoices.push(invoice)
+    state.user.invoices.push(invoice)
   },
   'REMOVE_INVOICE' (state, index) {
-    state.invoices.splice(index, 1)
+    state.user.invoices.splice(index, 1)
   }
 }
 const actions = {
@@ -43,7 +38,7 @@ const actions = {
     }
   },
   logout ({ commit }) {
-    commit('SET_USER', null)
+    commit('SET_USER', {...user})
   },
   addInvoice ({commit}, invoiceData) {
     commit('PUSH_INVOICE', invoiceData)
