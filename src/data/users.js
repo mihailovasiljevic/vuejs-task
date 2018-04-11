@@ -7,7 +7,7 @@ export default [
   {
     id: 2,
     username: 'test2',
-    password: 'test2',
+    password: 'test2'
   },
   {
     id: 3,
