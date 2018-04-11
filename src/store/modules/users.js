@@ -1,4 +1,5 @@
 import Users from '../../data/users'
+import Vue from 'vue'
 
 const user = {
   id: -1,
@@ -20,6 +21,7 @@ const state = {
 const mutations = {
   'SET_USER' (state, authData) {
     state.user = JSON.parse(JSON.stringify(authData))
+    Vue.set(state.user, 'invoices', [])
   },
   'SET_ERROR_MESSAGE' (state, error) {
     state.error = state.error !== null ? {...error} : null
