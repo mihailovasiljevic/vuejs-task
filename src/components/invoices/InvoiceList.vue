@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <v-layout align-center justify-center>
+      <v-layout align-center justify-center v-if="user.invoices.length > 0">
           <v-flex xs12 sm12 md12>
             <v-card class="elevation-1">
               <v-card-text>

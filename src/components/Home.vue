@@ -18,6 +18,7 @@ export default {
       return this.$store.getters.error
     },
     isLoggedIn () {
+      console.log('Provera da li je ulogovan: ')
       return this.user.id !== -1
     }
   },

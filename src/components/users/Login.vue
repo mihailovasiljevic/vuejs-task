@@ -1,7 +1,6 @@
 <template>
 <div id="login">
-  <!-- Home page has logic about redirections, just go to home page that will bring you back if needed-->
-  <router-link to="/"></router-link> 
+  {{isLoggedIn()}}
   <v-app id="login">
     <v-content>
       <v-container fluid fill-height>
@@ -49,6 +48,11 @@ export default {
     ]),
     loginUser () {
       this.$store.dispatch('login', {username: this.username, password: this.password}).then(this.$router.push({path: '/' + this.user.id + '/invoices'}))
+    },
+    isLoggedIn () {
+      if (this.user.id !== -1) {
+        this.$router.push({path: '/'})
+      }
     }
   },
   computed: {

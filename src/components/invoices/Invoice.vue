@@ -1,5 +1,8 @@
 <template>
-  <v-app id="invoices">
+<div>
+  {{isLoggedIn()}}
+  {{isTheRightUser()}}
+  <v-app id="invoices" >
     <v-content>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
@@ -48,6 +51,7 @@
     </v-content>
     <invoice-list></invoice-list>
   </v-app>
+  </div>
 </template>
 
 <script>
@@ -80,6 +84,16 @@ export default {
       this.invoice.description = ''
       this.invoice.date = ''
       this.invoice.amount = 0.0
+    },
+    isLoggedIn () {
+      if (this.user.id === -1) {
+        this.$router.push({path: '/'})
+      }
+    },
+    isTheRightUser () {
+      if (this.$route.params.id !== this.user.id) {
+        this.$router.push({path: '/' + this.user.id + '/invoices'})
+      }
     }
   },
   computed: {
