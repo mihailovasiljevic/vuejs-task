@@ -10,6 +10,7 @@
                   <v-text-field
                     label="Invoice number"
                     required
+                    v-model="invoiceId"
                   ></v-text-field>
                 </form>
               </v-card-text>
@@ -20,7 +21,7 @@
       </div>
     <div style="overflow-y: scroll; height:400px;">
     <v-list two-line subheader>
-            <v-list-tile avatar v-for="invoice in user.invoices" :key="invoice.id" @click="">
+            <v-list-tile avatar v-for="invoice in filteredInvoices" :key="invoice.id" @click="">
               <v-list-tile-content>
                 <v-list-tile-title>Invoice number: {{ invoice.id }}</v-list-tile-title>
                 <v-list-tile-sub-title>Description: {{ invoice.description }}</v-list-tile-sub-title>
@@ -31,7 +32,7 @@
                 <v-btn icon ripple @click="deleteInvoice(invoice)">
                   <v-icon color="grey lighten-1">delete</v-icon>
                 </v-btn>
-                <v-btn icon ripple @click="duplicateInvoice">
+                <v-btn icon ripple @click="duplicateInvoice(invoice)">
                   <v-icon color="grey lighten-1">view_agenda</v-icon>
                 </v-btn>
               </v-list-tile-action>
@@ -49,7 +50,7 @@ import {mapActions} from 'vuex'
 export default {
   data: () => ({
     drawer: null,
-    invoiceId: -1
+    invoiceId: ''
   }),
   methods: {
     ...mapActions([
@@ -61,6 +62,9 @@ export default {
       this.$store.dispatch('removeInvoice', invoiceData)
     },
     duplicateInvoice (invoiceData) {
+      console.log('DUPLIKAT IZ LISTE')
+      console.log(invoiceData)
+      this.$store.dispatch('duplicateInvoice', invoiceData)
     },
     checkIfCreated () {
       if (this.user.invoices === undefined) {
@@ -74,6 +78,11 @@ export default {
     },
     error () {
       return this.$store.getters.error
+    },
+    filteredInvoices () {
+      return this.user.invoices.filter(invoice => {
+        return invoice.id.toString().startsWith(this.invoiceId) || this.invoiceId === ''
+      })
     }
   }
 }

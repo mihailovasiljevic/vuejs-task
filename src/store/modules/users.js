@@ -27,10 +27,18 @@ const mutations = {
     state.error = state.error !== null ? {...error} : null
   },
   'PUSH_INVOICE' (state, invoice) {
-    state.user.invoices.push(invoice)
+    let newInvoice = {}
+    newInvoice = Object.assign(newInvoice, invoice)
+    state.user.invoices.push(newInvoice)
   },
   'REMOVE_INVOICE' (state, index) {
     state.user.invoices.splice(index, 1)
+  },
+  'DUPLICATE_INVOICE' (state, invoice) {
+    let invoiceList = state.user.invoices.slice(0)
+    console.log(invoice)
+    invoiceList.splice(invoice.idx, 0, invoice.inv)
+    state.user.invoices = invoiceList.slice(0)
   }
 }
 const actions = {
@@ -58,6 +66,20 @@ const actions = {
   removeInvoice ({commit}, invoiceData) {
     const invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.id === invoiceData.id))
     commit('REMOVE_INVOICE', invoiceIdx)
+  },
+  duplicateInvoice ({commit}, invoiceData) {
+    let invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.id === invoiceData.id))
+    let newInvoice = {}
+    Object.assign(newInvoice, invoiceData)
+    newInvoice.id = state.user.invoices.length + 1
+    console.log('DUPLIKAT IZ AKCIJE: ' + invoiceIdx)
+    console.log('[DUPLICATE INVOICE - ACTION, newInvoice.id]: ' + newInvoice.id)
+    console.log('[DUPLICATE INVOICE - ACTION, original.length-1]: ' + (state.user.invoices.length - 1))
+    if (invoiceIdx === state.user.invoices.length - 1) {
+      commit('PUSH_INVOICE', newInvoice)
+    } else {
+      commit('DUPLICATE_INVOICE', {idx: invoiceIdx, inv: newInvoice})
+    }
   }
 }
 
