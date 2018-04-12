@@ -140,6 +140,8 @@ export default {
     addUserInvoice () {
       let newInvoice = {}
       Object.assign(newInvoice, this.invoice)
+      newInvoice.id = Number(newInvoice.id)
+      newInvoice.amount = Number(newInvoice.amount)
       this.$store.dispatch('addInvoice', newInvoice)
     },
     clear () {

@@ -79,7 +79,17 @@ const actions = {
     let invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.id === invoiceData.id))
     let newInvoice = {}
     Object.assign(newInvoice, invoiceData)
-    newInvoice.id = state.user.invoices.length + 1
+    let idx = -1
+    newInvoice.id = state.user.invoices.length - 1
+    do {
+      newInvoice.id++
+      console.log('[newInvoice.id]: ' + newInvoice.id)
+      idx = state.user.invoices.indexOf(state.user.invoices.find((element) => {
+        console.log(element.id === newInvoice.id)
+        return element.id === newInvoice.id
+      }))
+      console.log('[IdX NOVI: ] ' + idx)
+    } while (idx !== -1)
     console.log('DUPLIKAT IZ AKCIJE: ' + invoiceIdx)
     console.log('[DUPLICATE INVOICE - ACTION, newInvoice.id]: ' + newInvoice.id)
     console.log('[DUPLICATE INVOICE - ACTION, original.length-1]: ' + (state.user.invoices.length - 1))
