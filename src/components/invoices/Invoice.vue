@@ -155,12 +155,14 @@ export default {
     },
     isLoggedIn () {
       if (this.user.id === -1) {
-        this.$router.push({path: '/'})
+        this.$router.push({path: '/login'})
       }
     },
     isTheRightUser () {
-      if (this.$route.params.id !== this.user.id) {
+      if (this.$route.params.id !== this.user.id && this.user.id !== -1) {
         this.$router.push({path: '/' + this.user.id + '/invoices'})
+      } else if (this.user.id === -1) {
+        this.$router.push({path: '/login'})
       }
     }
   },

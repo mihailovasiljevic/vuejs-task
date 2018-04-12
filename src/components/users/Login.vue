@@ -51,7 +51,7 @@ export default {
     },
     isLoggedIn () {
       if (this.user.id !== -1) {
-        this.$router.push({path: '/'})
+        this.$router.push({path: '/' + this.user.id + '/invoices'})
       }
     }
   },

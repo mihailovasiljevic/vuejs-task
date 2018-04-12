@@ -28,7 +28,16 @@
                 <v-list-tile-sub-title>Description: {{ invoice.description }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title>Amount: {{ invoice.amount }}</v-list-tile-sub-title>
                 <v-list-tile-sub-title>Date: {{ invoice.date }}</v-list-tile-sub-title>
+                
               </v-list-tile-content>
+                              <v-menu offset-y>
+                  <v-btn color="primary" dark slot="activator">Dropdown</v-btn>
+                  <v-list>
+                    <v-list-tile v-for="item in items" :key="item.title" @click="">
+                      <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                    </v-list-tile>
+                  </v-list>
+                </v-menu>
               <v-list-tile-action>
                 <v-btn icon ripple @click="deleteInvoice(invoice)">
                   <v-icon color="grey lighten-1">delete</v-icon>
