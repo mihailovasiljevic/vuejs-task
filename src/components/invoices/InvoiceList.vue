@@ -12,6 +12,7 @@
                     required
                     v-model="invoiceId"
                     name="search"
+                    ref="invoiceSearch"
                   ></v-text-field>
                 </form>
               </v-card-text>
@@ -91,7 +92,7 @@ export default {
         console.log(this.user)
       }
     },
-    filterInvoices (val) {
+    filterInvoices () {
       return this.user.invoices.filter(invoice => {
         return invoice.id.toString().startsWith(this.invoiceId) || this.invoiceId === ''
       })
@@ -123,8 +124,9 @@ export default {
         this.invoices = this.filterInvoices(val)
       }, 500)
   },
-  mounted () {
+  created () {
     this.invoiceId = ''
+    this.invoices = this.filterInvoices()
   }
 }
 </script>
