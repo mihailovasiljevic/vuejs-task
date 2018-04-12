@@ -80,7 +80,7 @@
                   
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                      <v-btn @click="addUserInvoice">submit</v-btn>
+                      <v-btn @click.prevent="addUserInvoice" :disabled="$v.$invalid">submit</v-btn>
                       <v-btn @click="clear">clear</v-btn>
                   </v-card-actions>
                 </form>
