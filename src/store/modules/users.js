@@ -30,15 +30,18 @@ const mutations = {
     let newInvoice = {}
     newInvoice = Object.assign(newInvoice, invoice)
     state.user.invoices.push(newInvoice)
+    state.error.message = ''
   },
   'REMOVE_INVOICE' (state, index) {
     state.user.invoices.splice(index, 1)
+    state.error.message = ''
   },
   'DUPLICATE_INVOICE' (state, invoice) {
     let invoiceList = state.user.invoices.slice(0)
     console.log(invoice)
     invoiceList.splice(invoice.idx, 0, invoice.inv)
     state.user.invoices = invoiceList.slice(0)
+    state.error.message = ''
   }
 }
 const actions = {
@@ -57,15 +60,20 @@ const actions = {
     commit('SET_USER', user)
   },
   addInvoice ({commit}, invoiceData) {
-    if (state.user.invoices === undefined) {
-      console.log('PROBLEM!')
+    const invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.id === invoiceData.id))
+    if (invoiceIdx !== -1) {
+      commit('SET_ERROR_MESSAGE', {message: 'Invoice with that id already exists.'})
     } else {
       commit('PUSH_INVOICE', invoiceData)
     }
   },
   removeInvoice ({commit}, invoiceData) {
     const invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.id === invoiceData.id))
-    commit('REMOVE_INVOICE', invoiceIdx)
+    if (invoiceIdx !== -1) {
+      commit('SET_ERROR_MESSAGE', {message: 'Invoice with that id doesn\'t exists.'})
+    } else {
+      commit('REMOVE_INVOICE', invoiceIdx)
+    }
   },
   duplicateInvoice ({commit}, invoiceData) {
     let invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.id === invoiceData.id))
@@ -75,10 +83,14 @@ const actions = {
     console.log('DUPLIKAT IZ AKCIJE: ' + invoiceIdx)
     console.log('[DUPLICATE INVOICE - ACTION, newInvoice.id]: ' + newInvoice.id)
     console.log('[DUPLICATE INVOICE - ACTION, original.length-1]: ' + (state.user.invoices.length - 1))
-    if (invoiceIdx === state.user.invoices.length - 1) {
-      commit('PUSH_INVOICE', newInvoice)
+    if (invoiceIdx === -1) {
+      commit('SET_ERROR_MESSAGE', {message: 'Invoice with that id doesn\'t exists.'})
     } else {
-      commit('DUPLICATE_INVOICE', {idx: invoiceIdx, inv: newInvoice})
+      if (invoiceIdx === state.user.invoices.length - 1) {
+        commit('PUSH_INVOICE', newInvoice)
+      } else {
+        commit('DUPLICATE_INVOICE', {idx: invoiceIdx, inv: newInvoice})
+      }
     }
   }
 }

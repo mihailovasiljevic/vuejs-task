@@ -14,18 +14,53 @@
                     label="Invoice number"
                     v-model="invoice.id"
                     required
+                    @input="$v.invoice.id.$touch()"
                   ></v-text-field>
+                  <span 
+                    style="color: red"
+                    class="form-group__message" 
+                    v-if="error">{{error.message}}
+                  </span>
+                  <span 
+                    style="color: red"
+                    class="form-group__message" 
+                    v-else-if="!$v.invoice.id.required">Field is required
+                  </span>
+                  <span 
+                    style="color: red"
+                    class="form-group__message" 
+                    v-if="!$v.invoice.id.numeric">
+                    Id must be numeric.
+                  </span>
                   <v-text-field
                     label="Description"
                     required
                     v-model="invoice.description"
+                    @input="$v.invoice.description.$touch()"
                     multi-line
                   ></v-text-field>
+                                    <span 
+                    style="color: red"
+                    class="form-group__message" 
+                    v-if="!$v.invoice.description.required">Field is required
+                  </span>
                   <v-text-field
                     label="Amount"
                     v-model="invoice.amount"
                     required
+                    @input="$v.invoice.amount.$touch()"
                   ></v-text-field>
+                                    <span 
+                    style="color: red"
+                    class="form-group__message" 
+                    v-if="!$v.invoice.amount.required">Field is required
+                  </span>
+                  <span 
+                    style="color: red"
+                    class="form-group__message" 
+                    v-if="!$v.invoice.amount.numeric">
+                    Id must be numeric.
+                  </span>
                   <v-date-picker 
                     :landscape="landscape" 
                     :reactive="reactive" 
@@ -34,8 +69,14 @@
                     v-model="invoice.date"
                     :first-day-of-week="1"
                     locale="sr-rs"
+                    @input="$v.invoice.date.$touch()"
                     >
                     </v-date-picker>
+                  <span 
+                    style="color: red"
+                    class="form-group__message" 
+                    v-if="!$v.invoice.date.required">Field is required
+                  </span>
                   
                   <v-card-actions>
                     <v-spacer></v-spacer>
@@ -57,6 +98,7 @@
 <script>
 import {mapActions} from 'vuex'
 import InvoiceList from './InvoiceList.vue'
+import { required, numeric } from 'vuelidate/lib/validators'
 
 export default {
   data: () => ({
@@ -70,8 +112,27 @@ export default {
       date: new Date().toISOString().slice(0, 10),
       amount: 0.0
     },
-    showInvoice: {}
+    showInvoice: {},
+    idError: ''
   }),
+  validations: {
+    invoice: {
+      id: {
+        required,
+        numeric
+      },
+      description: {
+        required
+      },
+      date: {
+        required
+      },
+      amount: {
+        required,
+        numeric
+      }
+    }
+  },
   methods: {
     ...mapActions([
       'addInvoice'

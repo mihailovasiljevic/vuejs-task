@@ -11,6 +11,7 @@
                     label="Invoice number"
                     required
                     v-model="invoiceId"
+                    @keypress="debouncedSearch"
                   ></v-text-field>
                 </form>
               </v-card-text>
@@ -50,7 +51,8 @@ import {mapActions} from 'vuex'
 export default {
   data: () => ({
     drawer: null,
-    invoiceId: ''
+    invoiceId: '',
+    debouncing: ''
   }),
   methods: {
     ...mapActions([
@@ -70,6 +72,17 @@ export default {
       if (this.user.invoices === undefined) {
         console.log(this.user)
       }
+    },
+    setDebouncing () {
+      this.debouncing = this.invoiceId
+    },
+    filteredInvoicesMethod () {
+      return this.user.invoices.filter(invoice => {
+        return invoice.id.toString().startsWith(this.debouncing) || this.debouncing === ''
+      })
+    },
+    debouncedSearch () {
+      this.$lodash.debounce(this.setDebouncing, 150)
     }
   },
   computed: {

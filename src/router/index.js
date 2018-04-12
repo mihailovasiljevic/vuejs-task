@@ -8,7 +8,8 @@ Vue.use(Router)
 const routes = [
   {path: '/', component: Home},
   {path: '/login', component: Login},
-  {path: '/:id/invoices', component: Invoices}
+  {path: '/:id/invoices', component: Invoices},
+  { path: '*', redirect: '/' }
 ]
 
 export default new Router({
