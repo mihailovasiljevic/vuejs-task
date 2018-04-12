@@ -30,22 +30,16 @@
                 <v-list-tile-sub-title>Date: {{ invoice.date }}</v-list-tile-sub-title>
                 
               </v-list-tile-content>
-                              <v-menu offset-y>
+              <v-menu offset-y>
                   <v-btn color="primary" dark slot="activator">Dropdown</v-btn>
                   <v-list>
-                    <v-list-tile v-for="item in items" :key="item.title" @click="">
-                      <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                    <v-list-tile v-for="setting in settings" :key="setting.title" @click="doSetting(setting.title, invoice)">
+                      <v-icon color="grey lighten-1">{{setting.icon}}</v-icon>
+                      <v-list-tile-title>{{ setting.title }}</v-list-tile-title>
                     </v-list-tile>
                   </v-list>
                 </v-menu>
-              <v-list-tile-action>
-                <v-btn icon ripple @click="deleteInvoice(invoice)">
-                  <v-icon color="grey lighten-1">delete</v-icon>
-                </v-btn>
-                <v-btn icon ripple @click="duplicateInvoice(invoice)">
-                  <v-icon color="grey lighten-1">view_agenda</v-icon>
-                </v-btn>
-              </v-list-tile-action>
+
             </v-list-tile>
             </v-list>
     </div>
@@ -62,7 +56,21 @@ export default {
   data: () => ({
     drawer: null,
     invoiceId: '',
-    invoices: []
+    invoices: [],
+    settings: [
+      {
+        title: 'Delete',
+        icon: 'delete',
+        method (val) {
+          this.deleteInvoice(val)
+        }
+      },
+      {
+        title: 'Duplicate',
+        icon: 'view_agenda',
+        method: (val) => { console.log(val) }
+      }
+    ]
   }),
   methods: {
     ...mapActions([
@@ -71,12 +79,12 @@ export default {
     ]),
     deleteInvoice (invoiceData) {
       console.log(invoiceData)
-      this.$store.dispatch('removeInvoice', invoiceData)
+      this.$store.dispatch('removeInvoice', invoiceData).then(this.invoices = this.user.invoices.slice(0))
     },
     duplicateInvoice (invoiceData) {
       console.log('DUPLIKAT IZ LISTE')
       console.log(invoiceData)
-      this.$store.dispatch('duplicateInvoice', invoiceData)
+      this.$store.dispatch('duplicateInvoice', invoiceData).then(this.invoices = this.user.invoices.slice(0))
     },
     checkIfCreated () {
       if (this.user.invoices === undefined) {
@@ -87,6 +95,16 @@ export default {
       return this.user.invoices.filter(invoice => {
         return invoice.id.toString().startsWith(this.invoiceId) || this.invoiceId === ''
       })
+    },
+    doSetting (title, invoice) {
+      switch (title) {
+        case 'Delete':
+          this.deleteInvoice(invoice)
+          break
+        case 'Duplicate':
+          this.duplicateInvoice(invoice)
+          break
+      }
     }
   },
   computed: {
@@ -106,7 +124,7 @@ export default {
       }, 500)
   },
   mounted () {
-    this.invoices = this.user.invoices.slice(0)
+    this.invoiceId = ''
   }
 }
 </script>

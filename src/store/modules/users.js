@@ -69,7 +69,7 @@ const actions = {
   },
   removeInvoice ({commit}, invoiceData) {
     const invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.id === invoiceData.id))
-    if (invoiceIdx !== -1) {
+    if (invoiceIdx === -1) {
       commit('SET_ERROR_MESSAGE', {message: 'Invoice with that id doesn\'t exists.'})
     } else {
       commit('REMOVE_INVOICE', invoiceIdx)
