@@ -11,7 +11,7 @@
                     label="Invoice number"
                     required
                     v-model="invoiceId"
-                    @keypress="debouncedSearch"
+                    name="search"
                   ></v-text-field>
                 </form>
               </v-card-text>
@@ -22,7 +22,7 @@
       </div>
     <div style="overflow-y: scroll; height:400px;">
     <v-list two-line subheader>
-            <v-list-tile avatar v-for="invoice in filteredInvoices" :key="invoice.id" @click="">
+            <v-list-tile avatar v-for="invoice in invoices" :key="invoice.id" @click="">
               <v-list-tile-content>
                 <v-list-tile-title>Invoice number: {{ invoice.id }}</v-list-tile-title>
                 <v-list-tile-sub-title>Description: {{ invoice.description }}</v-list-tile-sub-title>
@@ -47,12 +47,13 @@
 
 <script>
 import {mapActions} from 'vuex'
+import _ from 'lodash'
 
 export default {
   data: () => ({
     drawer: null,
     invoiceId: '',
-    debouncing: ''
+    invoices: []
   }),
   methods: {
     ...mapActions([
@@ -73,16 +74,10 @@ export default {
         console.log(this.user)
       }
     },
-    setDebouncing () {
-      this.debouncing = this.invoiceId
-    },
-    filteredInvoicesMethod () {
+    filterInvoices (val) {
       return this.user.invoices.filter(invoice => {
-        return invoice.id.toString().startsWith(this.debouncing) || this.debouncing === ''
+        return invoice.id.toString().startsWith(this.invoiceId) || this.invoiceId === ''
       })
-    },
-    debouncedSearch () {
-      this.$lodash.debounce(this.setDebouncing, 150)
     }
   },
   computed: {
@@ -91,12 +86,18 @@ export default {
     },
     error () {
       return this.$store.getters.error
-    },
-    filteredInvoices () {
-      return this.user.invoices.filter(invoice => {
-        return invoice.id.toString().startsWith(this.invoiceId) || this.invoiceId === ''
-      })
     }
+  },
+  watch: {
+    invoiceId: _.debounce(
+      function (val) {
+        console.log(val)
+        console.log('POKUSAVA')
+        this.invoices = this.filterInvoices(val)
+      }, 500)
+  },
+  mounted () {
+    this.invoices = this.user.invoices.slice(0)
   }
 }
 </script>

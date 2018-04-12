@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store/store'
-import lodash from 'lodash'
+import VueLodash from 'vue-lodash'
 import Vuelidate from 'vuelidate'
 
 import {
@@ -47,8 +47,10 @@ Vue.use(Vuetify, {
   }
 })
 
+const options = { name: 'lodash' } // customize the way you want to call it
+
+Vue.use(VueLodash, options)
 Vue.config.productionTip = false
-Object.defineProperty(Vue.prototype, '$lodash', { value: lodash })
 Vue.use(Vuelidate)
 
 /* eslint-disable no-new */
@@ -56,7 +58,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  lodash,
   components: { App },
   template: '<App/>'
 })
