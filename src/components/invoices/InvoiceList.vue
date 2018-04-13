@@ -32,7 +32,7 @@
                 
               </v-list-tile-content>
               <v-menu offset-y>
-                  <v-btn color="primary" dark slot="activator">Dropdown</v-btn>
+                  <v-btn color="primary" dark slot="activator">Settings</v-btn>
                   <v-list>
                     <v-list-tile v-for="setting in settings" :key="setting.title" @click="doSetting(setting.title, invoice)">
                       <v-icon color="grey lighten-1">{{setting.icon}}</v-icon>
