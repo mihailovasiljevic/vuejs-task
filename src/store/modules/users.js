@@ -35,7 +35,7 @@ const mutations = {
     state.error.message = ''
   },
   'DUPLICATE_INVOICE' (state, invoice) {
-    let invoiceList = state.user.invoices.slice(0)
+    const invoiceList = state.user.invoices.slice(0)
     console.log(invoice)
     invoiceList.splice(invoice.idx, 0, invoice.inv)
     state.user.invoices = invoiceList.slice(0)
@@ -99,7 +99,7 @@ var createNewId = function (id, invoices) {
 const getters = {
   user (state, getters) {
     if (state.user !== null) {
-      let {password, ...retUser} = state.user
+      const {password, ...retUser} = state.user
       return retUser
     } else {
       return null

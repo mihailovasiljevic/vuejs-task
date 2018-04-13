@@ -138,7 +138,7 @@ export default {
       'addInvoice'
     ]),
     addUserInvoice () {
-      let newInvoice = {}
+      const newInvoice = {}
       Object.assign(newInvoice, this.invoice)
       newInvoice.id = Number(newInvoice.id)
       newInvoice.amount = Number(newInvoice.amount)

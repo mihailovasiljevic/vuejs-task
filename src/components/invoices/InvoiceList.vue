@@ -114,6 +114,9 @@ export default {
     },
     error () {
       return this.$store.getters.error
+    },
+    filteredInvoices () {
+      return this.$store.getters.invoices
     }
   },
   watch: {
@@ -122,7 +125,10 @@ export default {
         console.log(val)
         console.log('POKUSAVA')
         this.invoices = this.filterInvoices()
-      }, 500)
+      }, 500),
+    filteredInvoices: function () {
+      this.invoices = this.filterInvoices()
+    }
   },
   created () {
     this.invoiceId = ''
