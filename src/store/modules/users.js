@@ -27,9 +27,7 @@ const mutations = {
     state.error = state.error !== null ? {...error} : null
   },
   'PUSH_INVOICE' (state, invoice) {
-    let newInvoice = {}
-    newInvoice = Object.assign(newInvoice, invoice)
-    state.user.invoices.push(newInvoice)
+    state.user.invoices.push(invoice)
     state.error.message = ''
   },
   'REMOVE_INVOICE' (state, index) {
@@ -76,23 +74,10 @@ const actions = {
     }
   },
   duplicateInvoice ({commit}, invoiceData) {
-    let invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.id === invoiceData.id))
-    let newInvoice = {}
+    const invoiceIdx = state.user.invoices.indexOf(state.user.invoices.find(element => element.id === invoiceData.id))
+    const newInvoice = {}
     Object.assign(newInvoice, invoiceData)
-    let idx = -1
-    newInvoice.id = state.user.invoices.length - 1
-    do {
-      newInvoice.id++
-      console.log('[newInvoice.id]: ' + newInvoice.id)
-      idx = state.user.invoices.indexOf(state.user.invoices.find((element) => {
-        console.log(element.id === newInvoice.id)
-        return element.id === newInvoice.id
-      }))
-      console.log('[IdX NOVI: ] ' + idx)
-    } while (idx !== -1)
-    console.log('DUPLIKAT IZ AKCIJE: ' + invoiceIdx)
-    console.log('[DUPLICATE INVOICE - ACTION, newInvoice.id]: ' + newInvoice.id)
-    console.log('[DUPLICATE INVOICE - ACTION, original.length-1]: ' + (state.user.invoices.length - 1))
+    newInvoice.id = createNewId(state.user.invoices.length - 1, state.user.invoices)
     if (invoiceIdx === -1) {
       commit('SET_ERROR_MESSAGE', {message: 'Invoice with that id doesn\'t exists.'})
     } else {
@@ -104,7 +89,13 @@ const actions = {
     }
   }
 }
-
+var createNewId = function (id, invoices) {
+  if (invoices.some(invoice => invoice.id === id)) {
+    return createNewId(id + 1, invoices)
+  } else {
+    return id
+  }
+}
 const getters = {
   user (state, getters) {
     if (state.user !== null) {

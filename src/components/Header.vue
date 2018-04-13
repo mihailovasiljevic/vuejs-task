@@ -7,7 +7,7 @@
     >
       <v-list dense>
         <router-link to="" v-if="user.id !== -1">
-          <v-list-tile @click="">
+          <v-list-tile>
             <v-list-tile-action>
               <v-icon>book</v-icon>
             </v-list-tile-action>
@@ -17,7 +17,7 @@
           </v-list-tile>
         </router-link>
         <router-link to="/login" v-else>
-          <v-list-tile @click="">
+          <v-list-tile>
             <v-list-tile-action>
               <v-icon>account_circle</v-icon>
             </v-list-tile-action>

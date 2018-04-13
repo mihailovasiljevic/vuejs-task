@@ -121,7 +121,7 @@ export default {
       function (val) {
         console.log(val)
         console.log('POKUSAVA')
-        this.invoices = this.filterInvoices(val)
+        this.invoices = this.filterInvoices()
       }, 500)
   },
   created () {
