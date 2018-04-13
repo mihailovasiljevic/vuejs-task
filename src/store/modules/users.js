@@ -22,6 +22,7 @@ const mutations = {
   'SET_USER' (state, authData) {
     state.user = JSON.parse(JSON.stringify(authData))
     Vue.set(state.user, 'invoices', [])
+    state.error.message = ''
   },
   'SET_ERROR_MESSAGE' (state, error) {
     state.error = state.error !== null ? {...error} : null

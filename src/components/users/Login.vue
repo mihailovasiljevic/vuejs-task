@@ -17,6 +17,11 @@
                 <v-spacer></v-spacer>
                 <v-btn color="primary" @click.prevent = "loginUser">Login</v-btn>
               </v-card-actions>
+              <span 
+                    style="color: red"
+                    class="form-group__message" 
+                    v-if="error.message">{{error.message}}
+              </span>
             </v-card>
           </v-flex>
         </v-layout>
